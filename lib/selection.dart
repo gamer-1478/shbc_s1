@@ -25,6 +25,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
         child: const Text('Login'),
       ),
     );
+
     final navToRegister = Material(
       color: Colors.blue,
       elevation: 5,

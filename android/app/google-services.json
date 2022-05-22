@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "860153463642",
+    "project_id": "shbc-a822a",
+    "storage_bucket": "shbc-a822a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860153463642:android:6ec8ffbd6a979d23be2963",
+        "android_client_info": {
+          "package_name": "com.example.shbc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860153463642-ich20pecj59l8noh2tc0ic2q9na0g856.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1Dmy2osl26h_Uy6bgS6CX98WJyM282p0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860153463642-ich20pecj59l8noh2tc0ic2q9na0g856.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

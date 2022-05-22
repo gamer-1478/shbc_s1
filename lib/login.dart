@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shbc/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -34,6 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(6))),
     );
 
+    _nav() {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (Route<dynamic> route) => false);
+    }
+
     var submit = Material(
       elevation: 4,
       color: Colors.green,
@@ -41,9 +51,39 @@ class _LoginScreenState extends State<LoginScreen> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         child: const Text('Login'),
-        onPressed: () => {},
+        onPressed: () async {
+          try {
+            final credential =
+                await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: emailController.text,
+              password: passController.text,
+            );
+            _nav();
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'user-not-found') {
+              Fluttertoast.showToast(
+                  msg: "No user found for that email.",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            } else if (e.code == 'wrong-password') {
+              Fluttertoast.showToast(
+                  msg: "Wrong password provided for that user.",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            }
+          }
+        },
       ),
     );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Screen'),

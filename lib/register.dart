@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shbc/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -57,6 +60,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           prefixIcon: const Icon(Icons.lock),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(6))),
     );
+    _nav() {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (Route<dynamic> route) => false);
+    }
 
     var submit = Material(
       elevation: 4,
@@ -65,7 +74,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         child: const Text('Register'),
-        onPressed: () => {},
+        onPressed: () async {
+          if (conPassController.text == passController.text) {
+            try {
+              final credential =
+                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: emailController.text,
+                password: passController.text,
+              );
+              _nav();
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                Fluttertoast.showToast(
+                    msg: "The password provided is too weak",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              } else if (e.code == 'email-already-in-use') {
+                Fluttertoast.showToast(
+                    msg: "The account already exists for that email.",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
+              }
+            } catch (e) {
+              print(e);
+            }
+          } else {
+            Fluttertoast.showToast(
+                msg: "Confirm password and password do not match",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+        },
       ),
     );
 
